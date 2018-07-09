@@ -12,18 +12,20 @@ const getRandomBetween = (minimum, maximum) => {
 
 let totalPops = 0;
 
-const max = 10;
+const max = 100;
 
 const selectionVariables = {
   primeWithRandom: {
     chance: getRandomBetween(0.1, 0.3),
     probabilities: [
-      getRandomBetween(0.6, 1) * 5,
+      getRandomBetween(0.6, 1) * 4,
       getRandomBetween(0.4, 0.6) * 2
     ]
   },
-  twoPrimes: [getRandomBetween(0.4, 0.7) * 2, getRandomBetween(0.5, 0.7) * 2]
+  twoPrimes: [getRandomBetween(0.6, 0.8) * 4, getRandomBetween(0.6, 0.8) * 4]
 };
+
+console.log(selectionVariables);
 
 for (let i = 0; i < max; i++) {
   const population = new Population(target, 0.1, 100, selectionVariables);
