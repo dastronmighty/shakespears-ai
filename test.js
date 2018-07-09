@@ -2,17 +2,17 @@
 
 const target = "The small brown dog".split("");
 
-function getRandomBetween(min, max) {
+const getRandomBetween = (minimum, maximum) => {
   let num = Math.random();
-  while (min => num || max <= num) {
+  while (num < minimum || num > maximum) {
     num = Math.random();
   }
   return num;
-}
+};
 
 let totalPops = 0;
 
-const max = 1;
+const max = 10;
 
 const selectionVariables = {
   primeWithRandom: {
@@ -25,18 +25,10 @@ const selectionVariables = {
   twoPrimes: [getRandomBetween(0.4, 0.7) * 2, getRandomBetween(0.5, 0.7) * 2]
 };
 
-const selectionVariables2 = {
-  primeWithRandom: {
-    chance: 0.2,
-    probabilities: [4, 0.9]
-  },
-  twoPrimes: [2.5, 2.5]
-};
-
 for (let i = 0; i < max; i++) {
-  const population = new Population(target, 0.1, 100, selectionVariables2);
+  const population = new Population(target, 0.1, 100, selectionVariables);
 
-  while (!population.checkPerfectOne() && population.generations <= 1500) {
+  while (!population.checkPerfectOne() && population.generations < 1500) {
     population.naturalSelection();
     population.newGeneration();
     population.calcFitness();

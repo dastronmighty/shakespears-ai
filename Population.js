@@ -43,7 +43,7 @@ class Population {
   }
 
   skewedRand(num) {
-    returns(Math.floor(this.matingPool.length * Math.pow(Math.random(), num)));
+    return Math.floor(this.matingPool.length * Math.pow(Math.random(), num));
   }
 
   newGeneration() {
