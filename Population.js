@@ -1,11 +1,12 @@
 "use strict";
 
 class Population {
-  constructor(target, mutationRate, maximumPopulation) {
+  constructor(target, mutationRate, maximumPopulation, selectionVars) {
+    this.selectionVars = selectionVars;
     this.target = target;
     this.mutationRate = mutationRate;
     this.maximumPopulation = maximumPopulation;
-    this.generations = [];
+    this.generations = 0;
     this.population = [];
     while (this.population.length < maximumPopulation) {
       this.population.push(new DNA(target));
@@ -29,35 +30,52 @@ class Population {
     });
     this.population.map(el => {
       let percentage = Math.round((el.fitness / totalFitness) * 100);
-      for (let i = 0; i < percentage; i++) {
+      for (let i = 0; i <= percentage; i++) {
         this.matingPool.push(el);
       }
     });
-    this.generations.push(
-      JSON.parse(
-        JSON.stringify(
-          this.matingPool
-            .sort(
-              (a, b) =>
-                a.fitness > b.fitness ? 1 : b.fitness > a.fitness ? -1 : 0
-            )
-            .reverse()
-        )
+    this.matingPool
+      .sort(
+        (a, b) => (a.fitness > b.fitness ? 1 : b.fitness > a.fitness ? -1 : 0)
       )
-    );
+      .reverse();
+    this.generations++;
+  }
+
+  skewedRand(num) {
+    returns(Math.floor(this.matingPool.length * Math.pow(Math.random(), num)));
   }
 
   newGeneration() {
     for (let i = 0; i < this.maximumPopulation; i++) {
-      this.population[i].crossover(
-        this.matingPool[
-          Math.floor(Math.random() * Math.random() * this.maximumPopulation)
-        ].genes,
-        this.matingPool[
-          Math.floor(Math.random() * Math.random() * this.maximumPopulation)
-        ].genes
-      );
+      if (Math.random() < this.selectionVars.primeWithRandom.chance) {
+        this.population[i].crossover(
+          this.matingPool[
+            this.skewedRand(this.selectionVars.primeWithRandom.probabilities[0])
+          ].genes,
+          this.matingPool[
+            this.skewedRand(this.selectionVars.primeWithRandom.probabilities[1])
+          ].genes
+        );
+      } else {
+        this.population[i].crossover(
+          this.matingPool[this.skewedRand(this.selectionVars.twoPrimes[0])]
+            .genes,
+          this.matingPool[this.skewedRand(this.selectionVars.twoPrimes[1])]
+            .genes
+        );
+      }
       this.population[i].mutate(this.mutationRate);
     }
+  }
+
+  checkPerfectOne() {
+    let found = false;
+    this.population.map(element => {
+      if (element.genes.join("") === this.target.join("")) {
+        found = true;
+      }
+    });
+    return found;
   }
 }

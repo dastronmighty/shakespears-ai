@@ -29,9 +29,7 @@ class DNA {
 
   mutate(mutationRate) {
     if (Math.random() < mutationRate) {
-      this.genes[Math.random() * this.genes.length] = String.fromCharCode(
-        Math.random() * 95 + 32
-      );
+      this.genes = this.generateString(target.length);
     }
   }
 
