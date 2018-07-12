@@ -48,7 +48,7 @@ class Population {
 
   newGeneration() {
     for (let i = 0; i < this.maximumPopulation; i++) {
-      if (Math.random() < this.selectionVars.primeWithRandom.chance) {
+      if (Math.random() < 0.2) {
         this.population[i].crossover(
           this.matingPool[
             this.skewedRand(this.selectionVars.primeWithRandom.probabilities[0])
@@ -59,10 +59,8 @@ class Population {
         );
       } else {
         this.population[i].crossover(
-          this.matingPool[this.skewedRand(this.selectionVars.twoPrimes[0])]
-            .genes,
-          this.matingPool[this.skewedRand(this.selectionVars.twoPrimes[1])]
-            .genes
+          this.matingPool[this.skewedRand(this.selectionVars.twoPrimes)].genes,
+          this.matingPool[this.skewedRand(this.selectionVars.twoPrimes)].genes
         );
       }
       this.population[i].mutate(this.mutationRate);
